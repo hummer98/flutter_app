@@ -2,7 +2,7 @@
 
 Flutter Architecture Sample Repository
 
-## flutter_hooks + useState
-* 圧倒的なコード量の少なさ
-* とはいえ書くのは簡単になるが、全面書き換えなのでそれはどうなの？っていう...
+## flutter_hooks + useProvider + StateProvider
+* あいかわらずの圧倒的なコード量の少なさ
+* HookBuilderで局所化も簡単
 <img src="screenshot.png"/>
