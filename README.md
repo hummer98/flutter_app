@@ -2,8 +2,8 @@
 
 Flutter Architecture Sample Repository
 
-## RxDart + BehaviorSubject Style
+## RxDart + Provider (BehaviorSubject) Style
 
-* 局所的な値なら、少ない記述量でクラス内に閉じ込めることはできる
+* BehaviorSubjectをClassに追い出してProviderで取得する
 * パフォーマンスは良好
 <img src="screenshot.png"/>

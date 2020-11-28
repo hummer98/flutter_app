@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 void main() {
@@ -8,13 +9,28 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Provider(
+      create: (_) => Counter(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
+  }
+}
+
+class Counter {
+  final _subject = BehaviorSubject.seeded(0);
+  ValueStream<int> get stream$ => _subject.stream;
+  void increment() {
+    _subject.add(_subject.value + 1);
+  }
+
+  void dispose() {
+    _subject.close();
   }
 }
 
@@ -23,10 +39,8 @@ class MyHomePage extends StatelessWidget {
 
   final String title;
 
-  final subject = BehaviorSubject.seeded(0);
-
-  @override
   Widget build(BuildContext context) {
+    final counter = context.select((Counter c) => c);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -39,8 +53,8 @@ class MyHomePage extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             StreamBuilder(
-              stream: subject.stream,
-              initialData: subject.value,
+              stream: counter.stream$,
+              initialData: counter.stream$.value,
               builder: (_, snapshot) {
                 return Text(
                   '${snapshot.data}',
@@ -52,7 +66,7 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => subject.add(subject.value + 1),
+        onPressed: counter.increment,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
