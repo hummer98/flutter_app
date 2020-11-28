@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<Counter>();
+    final notifier = context.select((Counter c) => c);
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -47,10 +47,13 @@ class MyHomePage extends StatelessWidget {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '${notifier.counter}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            Builder(builder: (c) {
+              final notifier = c.watch<Counter>();
+              return Text(
+                '${notifier.counter}',
+                style: Theme.of(c).textTheme.headline4,
+              );
+            }),
           ],
         ),
       ),
